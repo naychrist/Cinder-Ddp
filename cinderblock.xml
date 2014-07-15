@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<cinder>
+<block
+	name="DDP"
+	id=""
+	author="Rene Christen"
+	summary="Sends DDP protocol over UDP, requires Cinder-Asio block."
+	license=""
+	git="https://github.com/naychrist/Cinder-Ddp"
+	version="0.1"
+	library="http://www.3waylabs.com/ddp"
+	>
+	
+	<headerPattern>src/*.h</headerPattern>
+	<sourcePattern>src/*.cpp</sourcePattern>
+	
+	<platform os="msw">
+		<includePath system="false">src</includePath>
+	</platform>
+
+</block>
+</cinder>
