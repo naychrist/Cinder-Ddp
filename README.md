@@ -6,6 +6,5 @@ Requires BanTheRewind's [Cinder-Asio](https://github.com/BanTheRewind/Cinder-Asi
 
 ## Todo:
 
-* Push function to sync multiple devices not working yet.
 * Query function untested.
 * Windows example untested.

@@ -49,6 +49,7 @@ namespace ddp
         ddp_hdr_struct* ddp_header_query;
         ddp_hdr_struct* ddp_header_push;
         byte            dbuf[MAX_DBUFLEN];
+        byte            dbuf2[MAX_DBUFLEN];
 
         std::string     ip;
         UdpClientRef    client;

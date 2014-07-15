@@ -36,6 +36,7 @@ namespace ddp
             ddp_header_push->device = 0x01;
             setLength(ddp_header_push, 0);
             setOffset(ddp_header_push, 0);
+
         }
 
 
@@ -56,18 +57,6 @@ namespace ddp
             buffer.copyFrom(&dbuf, 10+ _length);
             udpSession->write( buffer );
 
-
-//                for (int i=0; i<10+_length; i++) {
-//
-//                    if (i==9) {
-//                        cout<<(int)dbuf[i]<<endl;
-//                    }
-//                    else {
-//                        cout<<(int)dbuf[i]<<",";
-//                    }
-//                }
-//                cout<<endl<<endl;
-
         }
     }
 
@@ -87,8 +76,9 @@ namespace ddp
         if (ddp_header_push)
         {
             Buffer buffer(10);
-            buffer.copyFrom(&ddp_header_push, 10);
+            buffer.copyFrom(&ddp_header_push[0], 10);
             udpSession->write( buffer );
+
         }
         else
         {
@@ -111,7 +101,7 @@ namespace ddp
             setOffset(ddp_header_push, 0);
         }
         Buffer buffer(10);
-        buffer.copyFrom(&ddp_header_query, 10);
+        buffer.copyFrom(&ddp_header_query[0], 10);
 
         udpSession->write( buffer );
         udpSession->read();
@@ -159,7 +149,7 @@ namespace ddp
 
     void Sender::onWrite( size_t bytesTransferred )
     {
-//            console() << toString( bytesTransferred ) + " bytes written"<<endl;
+            console() << toString( bytesTransferred ) + " bytes written"<<endl;
     }
 
     void Sender::onRead( ci::Buffer buffer )
