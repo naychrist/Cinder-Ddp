@@ -68,13 +68,16 @@ namespace ddp
 
     void Sender::close()
     {
-        console() << "Closed: " + ip + ":" + toString( DDP_PORT ) <<endl;
-        udpSession->getSocket()->close();
+        if (udpSession && udpSession->getSocket()->is_open())
+        {
+            udpSession->getSocket()->close();
+            console() << "Closed: " + ip + ":" + toString( DDP_PORT ) <<endl;
+        }
     }
 
     void Sender::push()
     {
-        if (ddp_header_push)
+        if (ddp_header_push && udpSession && udpSession->getSocket()->is_open())
         {
             Buffer buffer(10);
             buffer.copyFrom(&ddp_header_push[0], 10);
@@ -90,22 +93,25 @@ namespace ddp
 
     void Sender::getStatus()
     {
-
-        if (!ddp_header_query)
+        if (udpSession && udpSession->getSocket()->is_open())
         {
-            ddp_header_query = new ddp_hdr_struct;
-            ddp_header_query->flags1 = 0x43;       //v1 + push + query
-            ddp_header_query->reserved1 = 0x00;
-            ddp_header_query->type = 0x00;
-            ddp_header_query->device = 251; //read status
-            setLength(ddp_header_push, 0);
-            setOffset(ddp_header_push, 0);
-        }
-        Buffer buffer(10);
-        buffer.copyFrom(&ddp_header_query[0], 10);
+            if (!ddp_header_query)
+            {
+                ddp_header_query = new ddp_hdr_struct;
+                ddp_header_query->flags1 = 0x43;       //v1 + push + query
+                ddp_header_query->reserved1 = 0x00;
+                ddp_header_query->type = 0x00;
+                ddp_header_query->device = 251; //read status
+                setLength(ddp_header_push, 0);
+                setOffset(ddp_header_push, 0);
+            }
+            Buffer buffer(10);
+            buffer.copyFrom(&ddp_header_query[0], 10);
 
-        udpSession->write( buffer );
-        udpSession->read();
+            udpSession->write( buffer );
+            udpSession->read();
+        }
+
 
     }
 
