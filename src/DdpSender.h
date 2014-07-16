@@ -32,12 +32,13 @@ namespace ddp
     class Sender
     {
     public:
-        
+
         void setup( std::string _ip, bool _requirePush = false);
         void update( unsigned char * _data, int _length, int _offset = 0);
         
         void connect();
         void close();
+        bool getIsConnected();
 
         void push();
         void getStatus();

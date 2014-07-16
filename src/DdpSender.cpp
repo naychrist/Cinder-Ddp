@@ -48,7 +48,7 @@ namespace ddp
         setLength(ddp_header, _length);
         setOffset(ddp_header, _offset);
 
-        if ( _data && udpSession && udpSession->getSocket()->is_open() ) {
+        if ( _data && getIsConnected() ) {
 
             //send packet
             memcpy(&dbuf[0]+10,_data,_length);
@@ -68,16 +68,21 @@ namespace ddp
 
     void Sender::close()
     {
-        if (udpSession && udpSession->getSocket()->is_open())
+        if ( getIsConnected() )
         {
             udpSession->getSocket()->close();
             console() << "Closed: " + ip + ":" + toString( DDP_PORT ) <<endl;
         }
     }
 
+    bool Sender::getIsConnected()
+    {
+        return ( udpSession && udpSession->getSocket()->is_open() );
+    }
+
     void Sender::push()
     {
-        if (ddp_header_push && udpSession && udpSession->getSocket()->is_open())
+        if (ddp_header_push && getIsConnected() )
         {
             Buffer buffer(10);
             buffer.copyFrom(&ddp_header_push[0], 10);
@@ -93,7 +98,7 @@ namespace ddp
 
     void Sender::getStatus()
     {
-        if (udpSession && udpSession->getSocket()->is_open())
+        if ( getIsConnected() )
         {
             if (!ddp_header_query)
             {
