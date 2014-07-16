@@ -27,16 +27,16 @@ void DdpSenderApp::setup()
 {
 
     //For single NDB:
-    sender.setup(this,"10.0.0.102");
+    sender.setup("10.0.0.102");
     sender.connect();
 
 
     //For syncing multiple NDBs:
-//    sender.setup(this,"10.0.0.102", true);
+//    sender.setup("10.0.0.102", true);
 //    sender.connect();
 //    //sender2.setup(...);
 //    //sender2.connect();//etc.
-//    broadcaster.setup(this,"10.0.0.255",true);//broadcast address for subnet containing NDBs
+//    broadcaster.setup("10.0.0.255",true);//broadcast address for subnet containing NDBs
 //    broadcaster.connect();
 
 

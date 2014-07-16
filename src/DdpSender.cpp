@@ -7,11 +7,11 @@ namespace ddp
     using namespace ci;
     using namespace ci::app;
 
-    void Sender::setup( AppNative *_app, string _ip, bool _requirePush)
+    void Sender::setup( string _ip, bool _requirePush)
     {
         ip = _ip;
 
-        client = UdpClient::create( _app->io_service() );
+        client = UdpClient::create( ci::app::getWindow()->getApp()->io_service() );
 
         client->connectConnectEventHandler( &ddp::Sender::onConnect, this );
         client->connectErrorEventHandler( &ddp::Sender::onError, this );

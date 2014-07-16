@@ -33,7 +33,7 @@ namespace ddp
     {
     public:
         
-        void setup( ci::app::AppNative *_app, std::string _ip, bool _requirePush = false);
+        void setup( std::string _ip, bool _requirePush = false);
         void update( unsigned char * _data, int _length, int _offset = 0);
         
         void connect();
