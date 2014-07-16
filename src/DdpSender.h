@@ -37,7 +37,7 @@ namespace ddp
         void update( unsigned char * _data, int _length, int _offset = 0);
         
         void connect();
-        void close();//todo: disconnect
+        void close();
 
         void push();
         void getStatus();

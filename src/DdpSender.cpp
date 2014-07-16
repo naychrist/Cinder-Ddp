@@ -68,7 +68,8 @@ namespace ddp
 
     void Sender::close()
     {
-        //todo: disconnect
+        console() << "Closed: " + ip + ":" + toString( DDP_PORT ) <<endl;
+        udpSession->getSocket()->close();
     }
 
     void Sender::push()
@@ -149,7 +150,7 @@ namespace ddp
 
     void Sender::onWrite( size_t bytesTransferred )
     {
-            console() << toString( bytesTransferred ) + " bytes written"<<endl;
+//        console() << toString( bytesTransferred ) + " bytes written"<<endl;
     }
 
     void Sender::onRead( ci::Buffer buffer )
