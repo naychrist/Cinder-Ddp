@@ -9,8 +9,9 @@ namespace ddp
 
     // DDP protocol header definitions
     typedef unsigned char byte;
-    #define DDP_PORT    4048
-    #define MAX_DBUFLEN 1512
+    #define DDP_PORT        4048
+    #define MAX_DBUFLEN     1512
+    #define DDP_MAX_DATALEN (480*3)
 
 
     // DDP header format
@@ -56,7 +57,7 @@ namespace ddp
         UdpSessionRef   udpSession;
 
         void setOffset(ddp_hdr_struct* _header, int _offset);
-        void setLength(ddp_hdr_struct* _header, int _length);
+        int  setLength(ddp_hdr_struct* _header, int _length);
         
         void onConnect( UdpSessionRef session );
         void onError( std::string err, size_t bytesTransferred );

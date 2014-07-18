@@ -45,16 +45,16 @@ namespace ddp
 
     void Sender::update( unsigned char * _data, int _length, int _offset)
     {
-        setLength(ddp_header, _length);
+        int length = setLength(ddp_header, _length);
         setOffset(ddp_header, _offset);
 
         if ( _data && getIsConnected() ) {
 
             //send packet
-            memcpy(&dbuf[0]+10,_data,_length);
+            memcpy(&dbuf[0]+10,_data,length);
 
             Buffer buffer(10+_length);
-            buffer.copyFrom(&dbuf, 10+ _length);
+            buffer.copyFrom(&dbuf, 10+ length);
             udpSession->write( buffer );
 
         }
@@ -128,14 +128,15 @@ namespace ddp
         _header->offset4 = _offset & 0xff;
     }
 
-    void Sender::setLength(ddp_hdr_struct* _header, int _length)
+    int Sender::setLength(ddp_hdr_struct* _header, int _length)
     {
-        if (_length > 1440) {
-            _length = 1440;
+        if (_length > DDP_MAX_DATALEN) {
+            _length = DDP_MAX_DATALEN;
             console() << "Error: shortened DDP packet data length!" << endl;
         }
         _header->len1 = (_length >> 8) & 0xff;
         _header->len2 = _length & 0xff;
+        return _length;
     }
 
     void Sender::onConnect( UdpSessionRef session )
