@@ -53,8 +53,8 @@ namespace ddp
             //send packet
             memcpy(&dbuf[0]+10,_data,length);
 
-            Buffer buffer(10+_length);
-            buffer.copyFrom(&dbuf, 10+ length);
+            BufferRef buffer = Buffer::create(10+_length);
+            buffer->copyFrom(&dbuf, 10+ length);
             udpSession->write( buffer );
 
         }
@@ -84,8 +84,8 @@ namespace ddp
     {
         if (ddp_header_push && getIsConnected() )
         {
-            Buffer buffer(10);
-            buffer.copyFrom(&ddp_header_push[0], 10);
+            BufferRef buffer = Buffer::create(10);
+            buffer->copyFrom(&ddp_header_push[0], 10);
             udpSession->write( buffer );
 
         }
@@ -110,8 +110,8 @@ namespace ddp
                 setLength(ddp_header_push, 0);
                 setOffset(ddp_header_push, 0);
             }
-            Buffer buffer(10);
-            buffer.copyFrom(&ddp_header_query[0], 10);
+            BufferRef buffer = Buffer::create(10);
+            buffer->copyFrom(&ddp_header_query[0], 10);
 
             udpSession->write( buffer );
             udpSession->read();
@@ -146,7 +146,7 @@ namespace ddp
         udpSession->connectErrorEventHandler( &ddp::Sender::onError, this );
         udpSession->connectWriteEventHandler( &ddp::Sender::onWrite, this );
 
-        udpSession->getSocket()->set_option(boost::asio::socket_base::broadcast(true));
+        udpSession->getSocket()->set_option(asio::socket_base::broadcast(true));
 
         udpSession->connectReadCompleteEventHandler( &ddp::Sender::onReadComplete, this );
         udpSession->connectReadEventHandler( &ddp::Sender::onRead, this );
@@ -165,9 +165,9 @@ namespace ddp
 //        console() << toString( bytesTransferred ) + " bytes written"<<endl;
     }
 
-    void Sender::onRead( ci::Buffer buffer )
+    void Sender::onRead( ci::BufferRef buffer )
     {
-        console()<< toString( buffer.getDataSize() ) << " bytes read" <<endl;
+        console()<< toString( buffer->getSize() ) << " bytes read" <<endl;
         string response	= UdpSession::bufferToString( buffer );
         console()<< response <<endl;
 

@@ -2,7 +2,7 @@
 
 #include "UdpSession.h"
 #include "UdpClient.h"
-#include "cinder/app/AppNative.h"
+#include "cinder/app/App.h"
 
 namespace ddp
 {
@@ -62,7 +62,7 @@ namespace ddp
         void onConnect( UdpSessionRef session );
         void onError( std::string err, size_t bytesTransferred );
         void onWrite( size_t bytesTransferred );
-        void onRead( ci::Buffer buffer );
+        void onRead( ci::BufferRef buffer );
         void onReadComplete();
 
 
