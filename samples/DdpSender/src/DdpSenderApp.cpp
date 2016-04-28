@@ -1,4 +1,5 @@
-#include "cinder/app/AppNative.h"
+#include "cinder/app/App.h"
+#include "cinder/app/RendererGl.h"
 #include "cinder/gl/gl.h"
 #include "cinder/CinderMath.h"
 
@@ -8,13 +9,13 @@ using namespace ci;
 using namespace ci::app;
 using namespace std;
 
-class DdpSenderApp : public AppNative {
+class DdpSenderApp : public App {
   public:
-	void setup();
-	void mouseMove( MouseEvent event );
-    void mouseDown( MouseEvent event );
-	void update();
-	void draw();
+	void setup() override;
+	void mouseMove( MouseEvent event ) override;
+    	void mouseDown( MouseEvent event ) override;
+	void update() override;
+	void draw() override;
     
     ddp::Sender     sender;
     ddp::Sender     broadcaster;
@@ -27,16 +28,16 @@ void DdpSenderApp::setup()
 {
 
     //For single NDB:
-    sender.setup("10.0.0.102");
+    sender.setup("10.0.1.101");
     sender.connect();
 
 
     //For syncing multiple NDBs:
-//    sender.setup("10.0.0.102", true);
+//    sender.setup("10.0.1.101", true);
 //    sender.connect();
 //    //sender2.setup(...);
 //    //sender2.connect();//etc.
-//    broadcaster.setup("10.0.0.255",true);//broadcast address for subnet containing NDBs
+//    broadcaster.setup("10.0.1.255",true);//broadcast address for subnet containing NDBs
 //    broadcaster.connect();
 
 
@@ -78,7 +79,7 @@ void DdpSenderApp::draw()
 {
 	gl::clear( Color( 0, 0, 0 ) );
     gl::color( Color( 1,1,1) );
-    gl::drawLine(Vec2i(mouseX,0), Vec2i(mouseX,getWindowHeight()));
+    gl::drawLine(glm::vec2(mouseX,0), glm::vec2(mouseX,getWindowHeight()));
 }
 
-CINDER_APP_NATIVE( DdpSenderApp, RendererGl )
+CINDER_APP( DdpSenderApp, RendererGl )
