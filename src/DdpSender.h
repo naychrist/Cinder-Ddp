@@ -10,8 +10,8 @@ namespace ddp
     // DDP protocol header definitions
     typedef unsigned char byte;
     #define DDP_PORT        4048
-    #define MAX_DBUFLEN     1512
-    #define DDP_MAX_DATALEN (480*3)
+    #define DDP_MAX_DATALEN (4096*3) //WSNDB = 4096 lights, NDB = 1600 lights
+    #define MAX_DBUFLEN     1472 //based on UDP - sadly not as big as DDP_MAX_DATALEN
 
 
     // DDP header format
