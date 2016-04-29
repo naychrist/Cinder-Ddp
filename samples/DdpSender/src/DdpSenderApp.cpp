@@ -13,7 +13,7 @@ class DdpSenderApp : public App {
   public:
 	void setup() override;
 	void mouseMove( MouseEvent event ) override;
-    	void mouseDown( MouseEvent event ) override;
+    void mouseDown( MouseEvent event ) override;
 	void update() override;
 	void draw() override;
     
@@ -28,16 +28,16 @@ void DdpSenderApp::setup()
 {
 
     //For single NDB:
-    sender.setup("10.0.1.101");
+    sender.setup("10.0.0.100");
     sender.connect();
 
 
     //For syncing multiple NDBs:
-//    sender.setup("10.0.1.101", true);
+//    sender.setup("10.0.0.100", true);
 //    sender.connect();
 //    //sender2.setup(...);
 //    //sender2.connect();//etc.
-//    broadcaster.setup("10.0.1.255",true);//broadcast address for subnet containing NDBs
+//    broadcaster.setup("10.0.0.255",true);//broadcast address for subnet containing NDBs
 //    broadcaster.connect();
 
 
