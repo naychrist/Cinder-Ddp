@@ -7,6 +7,8 @@ namespace ddp
     using namespace ci;
     using namespace ci::app;
 
+    static char jcreboot[] = "{\"config\" : {\"reboot\":1}}";
+
     void Sender::setup( string _ip, bool _requirePush)
     {
         ip = _ip;
@@ -26,6 +28,8 @@ namespace ddp
         ddp_header->reserved1 = 0x00;
         ddp_header->type = 0x00;
         ddp_header->device = 0x01;
+
+        ddp_header_config = new ddp_hdr_struct;
 
         if (_requirePush)
         {
@@ -95,6 +99,51 @@ namespace ddp
         }
 
     }
+
+
+    void Sender::black()
+    {
+        byte dbuf_black[MAX_DBUFLEN] = { 0 };
+        update( dbuf_black, MAX_DBUFLEN-10, 0);
+    }
+
+    void Sender::reset()
+    {
+        black();
+        config(jcreboot);
+        close();
+    }
+
+    void Sender::config( char *jconf )
+    {
+        if ( getIsConnected() ) {
+
+            ddp_header_config->flags1 = 0x41;       // v1 + push (write)
+            ddp_header_config->reserved1 = 0x00;
+            ddp_header_config->type = 0x00;
+            ddp_header_config->device = 250;  // json config
+            ddp_header_config->offset1 = 0;
+            ddp_header_config->offset2 = 0;
+            ddp_header_config->offset3 = 0;
+            ddp_header_config->offset4 = 0;
+            int dlen = strlen( jconf );
+            ddp_header_config->len1 = (dlen >> 8) & 0xff;
+            ddp_header_config->len2 = dlen & 0xff;
+
+            memcpy(&dbuf[0],ddp_header_config,10);
+            memcpy(&dbuf[0]+10,jconf,dlen);
+            BufferRef buffer = Buffer::create(10+dlen);
+            buffer->copyFrom(&dbuf, 10+ dlen);
+            udpSession->write( buffer );
+
+            console() << "Sent: " << jconf << endl;
+        }
+        else
+        {
+            console() << "Error: Not connected so can't config!" <<endl;
+        }
+    }
+
 
     void Sender::getStatus()
     {

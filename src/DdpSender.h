@@ -44,12 +44,17 @@ namespace ddp
         void push();
         void getStatus();
 
+        void black();
+        void reset();
+        void config(char *jconf);
+
 
     private:
 
         ddp_hdr_struct* ddp_header;
         ddp_hdr_struct* ddp_header_query;
         ddp_hdr_struct* ddp_header_push;
+        ddp_hdr_struct* ddp_header_config;
         byte            dbuf[MAX_DBUFLEN];
 
         std::string     ip;

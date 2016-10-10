@@ -2,6 +2,7 @@
 #include "cinder/app/RendererGl.h"
 #include "cinder/gl/gl.h"
 #include "cinder/CinderMath.h"
+#include "cinder/Timeline.h"
 
 #include "DdpSender.h"
 
@@ -14,6 +15,7 @@ class DdpSenderApp : public App {
 	void setup() override;
 	void mouseMove( MouseEvent event ) override;
     void mouseDown( MouseEvent event ) override;
+	void keyDown( KeyEvent event ) override;
 	void update() override;
 	void draw() override;
     
@@ -28,7 +30,7 @@ void DdpSenderApp::setup()
 {
 
     //For single NDB:
-    sender.setup("10.0.0.100");
+    sender.setup("10.0.0.101");
     sender.connect();
 
 
@@ -59,6 +61,18 @@ void DdpSenderApp::mouseMove( MouseEvent event )
 void DdpSenderApp::mouseDown( MouseEvent event )
 {
 //    broadcaster.getStatus(); //untested
+}
+
+void DdpSenderApp::keyDown( KeyEvent event )
+{
+	if (event.getChar() == 'r') {
+		sender.reset();
+		timeline().add([&]{
+			console() << "Attempting to reconnect..." <<endl;
+			sender.setup("10.0.0.101");
+			sender.connect();
+		}, timeline().getCurrentTime() + 60);
+	}
 }
 
 void DdpSenderApp::update()
