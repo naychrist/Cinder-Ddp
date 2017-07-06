@@ -5,7 +5,6 @@ if( NOT TARGET DDP )
 
     add_library( DDP ${DDP_SOURCES} )
     target_include_directories( DDP PUBLIC "${DDP_SOURCE_PATH}" )
-    target_include_directories( DDP PUBLIC "${CMAKE_CURRENT_LIST_DIR}/../../../Asio/src" )
     message(STATUS ${DDP_SOURCE_PATH} )
 
     # If Cinder included from this block:
@@ -19,5 +18,5 @@ if( NOT TARGET DDP )
                 "$ENV{CINDER_PATH}/${CINDER_LIB_DIRECTORY}" )
     endif()
 
-    target_link_libraries( DDP PRIVATE cinder )
+    target_link_libraries( DDP PRIVATE cinder Asio )
 endif()
